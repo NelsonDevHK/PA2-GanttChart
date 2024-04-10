@@ -132,7 +132,7 @@ int updateCurProcess(){ // take care same vruntime collision and correct run ord
 void print_cfs_process()
 {
     int i;
-    if (!DISPLAY_VRUNTIME)
+    if (DISPLAY_VRUNTIME)
     {
         // Print out an extra vruntime for debugging
         printf("Process\tWeight\tRemain\tSlice\tvruntime\n");
@@ -200,12 +200,15 @@ void execute_cfs_scheduling()
                 if(process[i].remain_time == 0)
                     finish_process_count += 1;
             //update chart
-            if(chart[num_chart_item - 1].pid != i && num_chart_item != 0){
+            if(num_chart_item == 0){
                 chart[num_chart_item].pid = i;
                 chart[num_chart_item++].duration = runtime;
-            }else
-                chart[num_chart_item++ - 1].duration += runtime;
-                
+            }else if( i == chart[num_chart_item - 1].pid)
+                chart[num_chart_item - 1].duration += runtime;
+            else{
+                chart[num_chart_item].pid = i;
+                chart[num_chart_item++].duration = runtime;
+            }
             
         }else{
             //Main Selection
@@ -223,11 +226,12 @@ void execute_cfs_scheduling()
                 if(process[Cur].remain_time == 0)
                     finish_process_count += 1;
             //update chart
-            if(chart[num_chart_item - 1].pid != i && num_chart_item != 0){
-                chart[num_chart_item].pid = i;
+            if(Cur == chart[num_chart_item - 1].pid)
+                chart[num_chart_item - 1].duration += runtime;
+            else{
+                chart[num_chart_item].pid = Cur;
                 chart[num_chart_item++].duration = runtime;
-            }else
-                chart[num_chart_item++ - 1].duration += runtime;
+            }
         }
         print_cfs_process();
         if(i == num_process - 1){// since the for loop will loop until all finish reset the position of process
