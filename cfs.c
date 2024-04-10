@@ -177,19 +177,20 @@ void initialize_cfs_process()
         if(process[i].time_slice < min_granularity)
             process[i].time_slice = min_granularity;
     }
+
+    printf(template_step_i, 0);
     print_cfs_process();
 }
 
 void execute_cfs_scheduling()
 {
     // TODO: write your CFS algorithm code
-    int runtime, count = 1;
-    int RunOrder[num_process];
-    int timeLine;
+    int runtime;
+    int count = 1;
     
     for(int i = 0 ; finish_process_count != num_process; i++){
 
-        printf(template_step_i, count);
+        printf(template_step_i, count++);
         if(process[i].vruntime == 0 && process[i].time_slice){//No yet initialize and must be smallest vruntime and pid
             if(process[i].remain_time > process[i].time_slice)
                 runtime = process[i].time_slice;
@@ -237,8 +238,6 @@ void execute_cfs_scheduling()
         if(i == num_process - 1){// since the for loop will loop until all finish reset the position of process
             i = 0;
         }
-        
-        count++;
     }
     
 }
