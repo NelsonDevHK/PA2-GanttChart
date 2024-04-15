@@ -110,7 +110,7 @@ int finish_process_count = 0; // the number of finished process
 // Region: Functions
 // ===
 int updateCurProcess(){ // take care same vruntime collision and correct run order
-    double MIN_vrunTime = INT16_MAX;
+    double MIN_vrunTime = 88761;
     int Cur;
     for( int i  = 0 ; i < num_process ; i++){ //checked
             if(process[i].remain_time == 0)
